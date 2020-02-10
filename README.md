@@ -4,5 +4,5 @@
 $ make build
 ```
 ```sh
-$ make deplo
-```y
+$ make deploy
+```
