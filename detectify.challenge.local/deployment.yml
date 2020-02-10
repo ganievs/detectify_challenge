@@ -1,0 +1,60 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: detectify-challenge-local-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+  - host: detectify.challenge.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: detectify-challenge-local-app
+          servicePort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: detectify-challenge-local-app
+  labels:
+    app: detectify-challenge-local-app
+    tier: frontend
+spec:
+  type: NodePort 
+  ports:
+  - port: 80
+  selector:
+    app: detectify-challenge-local-app
+    tier: frontend
+    
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: detectify-challenge-local-app
+  labels:
+    app: detectify-challenge-local-app
+spec:
+  selector:
+    matchLabels:
+      app: detectify-challenge-local-app
+      tier: frontend
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: detectify-challenge-local-app
+        tier: frontend
+    spec:
+      containers:
+      - name: detectify-challenge-local-app
+        image: detectify_challenge_local
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        ports:
+        - containerPort: 80
