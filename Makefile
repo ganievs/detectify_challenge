@@ -4,7 +4,6 @@ GIT_INFO = $(shell git log -1 --format=%h)
 
 default: build
 
-
 build: build-challenge-local build-detectify-challenge-local
 	@eval $$(minikube docker-env) ;\
 
@@ -19,7 +18,7 @@ build-detectify-challenge-local:
 deploy: deploy-challenge-local deploy-detectify-challenge-local
 
 deploy-challenge-local:
-	@@echo deploying challenge.local
+	@echo deploying challenge.local
 	@kubectl apply -f challenge.local/
 
 deploy-detectify-challenge-local:
